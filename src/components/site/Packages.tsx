@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { MessageCircle } from "lucide-react";
-import { catalog, waLink, type CatalogGroup } from "@/lib/site";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { BookingForm } from "./Booking";
+import { catalog, type CatalogGroup } from "@/lib/site";
 import { useI18n, usePrice } from "@/lib/i18n";
 import { Reveal, SectionHeading } from "./Reveal";
 
@@ -9,6 +12,8 @@ export function Packages() {
   const { t, lang } = useI18n();
   const s = t.catalogSection;
   const price = usePrice();
+  const [open, setOpen] = useState<string | null>(null);
+  const openItem = catalog.find((c) => c.id === open);
 
   return (
     <section id="experiences" className="relative py-24 lg:py-32">
@@ -28,7 +33,7 @@ export function Packages() {
                   .filter((c) => c.group === group)
                   .map((item, i) => {
                     const c = item[lang];
-                    const priceLabel = price(item.price);
+                    const priceLabel = item.priceMax ? `${price(item.price)} - ${price(item.priceMax)}` : price(item.price);
                     return (
                       <Reveal key={item.id} delay={(i % 3) * 0.1}>
                         <article className="luxe-card group flex h-full flex-col overflow-hidden">
@@ -57,15 +62,14 @@ export function Packages() {
                               ) : null}
                             </div>
 
-                            <a
-                              href={waLink(s.waMessage(c.title, priceLabel))}
-                              target="_blank"
-                              rel="noreferrer"
+                            <button
+                              type="button"
+                              onClick={() => setOpen(item.id)}
                               className="mt-6 inline-flex items-center justify-center gap-2 border border-gold/60 px-6 py-3 text-[0.68rem] uppercase tracking-[0.22em] text-gold transition-all hover:bg-gold hover:text-primary-foreground hover:shadow-[var(--shadow-gold)]"
                             >
                               <MessageCircle className="h-3.5 w-3.5" />
                               {s.bookNow}
-                            </a>
+                            </button>
                           </div>
                         </article>
                       </Reveal>
@@ -76,6 +80,12 @@ export function Packages() {
           ))}
         </div>
       </div>
+      <Dialog open={!!open} onOpenChange={(v) => !v && setOpen(null)}>
+        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto border-gold/40 bg-background p-4 sm:p-6">
+          <DialogTitle className="text-gold">{openItem?.[lang].title}</DialogTitle>
+          {open && <BookingForm key={open} initialRide={open} />}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

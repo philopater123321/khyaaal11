@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { MessageCircle, Phone } from "lucide-react";
-import { catalog, waLink, PHONE } from "@/lib/site";
+import { MessageCircle } from "lucide-react";
+import { catalog, waLink } from "@/lib/site";
 import { useI18n } from "@/lib/i18n";
 import { Reveal } from "./Reveal";
 
-export function Booking() {
+export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
   const { t, lang } = useI18n();
   const b = t.booking;
 
@@ -15,7 +15,8 @@ export function Booking() {
     time: "",
     location: "giza" as "giza" | "saqqara",
     riders: "2",
-    rideType: "",
+    rideType: initialRide,
+    ...(initialRide === "saqqara" ? { location: "saqqara" as const } : {}),
     experience: "",
   });
 
@@ -32,6 +33,7 @@ export function Booking() {
     const selectedRide = catalog.find((ride) => ride.id === form.rideType);
     if (!selectedRide) return;
     const total = selectedRide.price * Number(form.riders || 0);
+    const timeLabel = form.time;
     const message = b.message({
       name: form.name,
       phone: form.phone,
@@ -50,31 +52,13 @@ export function Booking() {
     "w-full border border-input bg-background/60 px-4 py-3.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-gold";
   const label = "block text-[0.66rem] uppercase tracking-[0.22em] text-muted-foreground";
 
-  return (
-    <section id="contact" className="relative py-24 lg:py-32">
-      <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[0.9fr_1.1fr] lg:px-10">
-        <Reveal>
-          <p className="eyebrow">{b.eyebrow}</p>
-          <h2 className="mt-4 text-3xl leading-tight sm:text-4xl md:text-5xl">
-            {b.titleA} <span className="text-gold-gradient">{b.titleHighlight}</span>
-          </h2>
-          <div className="gold-rule mt-6" />
-          <p className="mt-7 text-[0.95rem] leading-relaxed text-muted-foreground">{b.copy}</p>
-          <a
-            href={`tel:${PHONE.replace(/\s/g, "")}`}
-            dir="ltr"
-            className="mt-9 inline-flex items-center gap-3 text-sm tracking-[0.12em] text-gold"
-          >
-            <Phone className="h-4 w-4" />
-            {PHONE}
-          </a>
-        </Reveal>
+  const current = catalog.find((r) => r.id === form.rideType);
 
-        <Reveal delay={0.1}>
+  return (
+
           <form
             onSubmit={submit}
-            className="luxe-card space-y-5 p-8 sm:p-10"
-            style={{ transform: "none" }}
+            className="luxe-card space-y-5 p-6 sm:p-10"
           >
             <div>
               <label className={label} htmlFor="name">
@@ -124,14 +108,18 @@ export function Booking() {
                 <label className={label} htmlFor="time">
                   {b.time}
                 </label>
-                <input
-                  id="time"
-                  type="time"
-                  required
-                  value={form.time}
-                  onChange={set("time")}
-                  className={`mt-2 ${field}`}
-                />
+                {current?.slots ? (
+                  <select id="time" required value={form.time} onChange={set("time")} className={`mt-2 ${field}`}>
+                    <option value="" disabled>{lang === "ar" ? "اختر ميعاد الرايد" : "Choose a slot"}</option>
+                    {current.slots.map((sl, i) => (
+                      <option key={sl} value={sl}>
+                        {(lang === "ar" ? ["الرايد الأول 6:00 ص", "الرايد الثاني 8:00 ص", "الرايد الثالث 3:00 م", "الرايد الرابع 4:30 م"] : ["1st ride 6:00 AM", "2nd ride 8:00 AM", "3rd ride 3:00 PM", "4th ride 4:30 PM"])[i]}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input id="time" type="time" required value={form.time} onChange={set("time")} className={`mt-2 ${field}`} />
+                )}
               </div>
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
@@ -173,7 +161,7 @@ export function Booking() {
                   id="rideType"
                   required
                   value={form.rideType}
-                  onChange={set("rideType")}
+                  onChange={(e) => setForm((f) => ({ ...f, rideType: e.target.value, time: "" }))}
                   className={`mt-2 ${field}`}
                 >
                   <option value="" disabled>{b.selectRide}</option>
@@ -187,7 +175,7 @@ export function Booking() {
                 <input
                   id="total"
                   readOnly
-                  value={form.rideType ? `${(catalog.find((ride) => ride.id === form.rideType)?.price ?? 0) * Number(form.riders || 0)} ${t.currency}` : ""}
+                  value={form.rideType ? `${current?.priceMax ? (lang === "ar" ? "من " : "From ") : ""}${(catalog.find((ride) => ride.id === form.rideType)?.price ?? 0) * Number(form.riders || 0)} ${t.currency}` : ""}
                   className={`mt-2 ${field}`}
                 />
               </div>
@@ -213,6 +201,21 @@ export function Booking() {
               {b.submit}
             </button>
           </form>
+  );
+}
+
+export function Booking() {
+  const { t } = useI18n();
+  const b = t.booking;
+  return (
+    <section id="contact" className="relative py-20 lg:py-24">
+      <div className="mx-auto max-w-3xl px-5 lg:px-10">
+        <Reveal>
+          <p className="eyebrow text-center">{b.eyebrow}</p>
+          <h2 className="mt-4 text-center text-3xl leading-tight sm:text-4xl md:text-5xl">
+            {b.titleA} <span className="text-gold-gradient">{b.titleHighlight}</span>
+          </h2>
+          <div className="mt-10"><BookingForm /></div>
         </Reveal>
       </div>
     </section>
