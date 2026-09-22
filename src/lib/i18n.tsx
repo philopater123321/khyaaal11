@@ -46,7 +46,7 @@ const en = {
       },
       {
         title: "Breathtaking Iconic Routes",
-        copy: "From the Giza plateau's pyramid skyline to the quiet dunes and palm groves of Saqqara, every trail is chosen for beauty and safe footing.",
+        copy: "From the Giza plateau's pyramid skyline or the quiet dunes and palm groves of Saqqara, every trail is chosen for beauty and safe footing.",
       },
       {
         title: "VIP White-Glove Service",
@@ -81,7 +81,7 @@ const en = {
   locationsSection: {
     eyebrow: "Our Locations",
     title: "Two stables, two very different horizons",
-    copy: "Choose the pyramid plateau or the open desert of Saqqara, or ride both across a single stay.",
+    copy: "",
     maps: "Open in Google Maps",
     items: {
       giza: {
@@ -208,8 +208,8 @@ const ar: Dict = {
   hero: {
     eyebrow: "أهرامات الجيزة · سقارة · مصر",
     titleA: "هنعلم مصر كلها",
-    titleB: "الخيل",
-    copy: "استكشف أهرامات الجيزة وصحراء سقارة على ظهور أصايل الخيل العربية مع براء الخيال.",
+    titleB: "خيل",
+    copy: "استكشف أهرامات الجيزة على ظهور أصايل الخيل العربية مع براء الخيال.",
     ctaPackages: "استكشف الباقات",
     ctaWhatsapp: "تواصل عبر الواتساب",
   },
@@ -262,7 +262,7 @@ const ar: Dict = {
   locationsSection: {
     eyebrow: "الفروع والمواقع",
     title: "إسطبلان، وأفقان مختلفان تمامًا",
-    copy: "اختر هضبة الأهرامات أو صحراء سقارة المفتوحة، أو اجمع بينهما في رحلة واحدة.",
+    copy: "",
     maps: "افتح في خرائط جوجل",
     items: {
       giza: {
