@@ -9,6 +9,7 @@ import { Locations } from "@/components/site/Locations";
 import { Gallery } from "@/components/site/Gallery";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Booking } from "@/components/site/Booking";
+import { PromoPopup } from "@/components/site/PromoPopup";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
 
@@ -38,13 +39,14 @@ function Index() {
       <Hero />
       <About />
       <Packages />
+      <Booking />
       <GearShop />
       <Locations />
       <Gallery />
       <Testimonials />
-      <Booking />
       <Footer />
         <WhatsAppFloat />
+        <PromoPopup />
       </main>
     </I18nProvider>
   );
