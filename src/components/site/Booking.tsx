@@ -33,7 +33,6 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
     const selectedRide = catalog.find((ride) => ride.id === form.rideType);
     if (!selectedRide) return;
     const total = selectedRide.price * Number(form.riders || 0);
-    const timeLabel = form.time;
     const message = b.message({
       name: form.name,
       phone: form.phone,
