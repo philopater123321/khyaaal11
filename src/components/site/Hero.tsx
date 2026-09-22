@@ -9,8 +9,8 @@ export function Hero() {
   return (
     <section id="home" className="relative flex min-h-[100svh] items-center overflow-hidden">
       <motion.img
-        src={img.pyramidsWalk}
-        alt="Arabian horse on the sands before the Giza Pyramids"
+        src={img.home}
+        alt="Group of riders with Arabian horses at the stable"
         initial={{ scale: 1.12 }}
         animate={{ scale: 1 }}
         transition={{ duration: 12, ease: "easeOut" }}

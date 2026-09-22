@@ -26,6 +26,7 @@ export const img = {
   magicWater: "/images/magic-water-ride.png",
   espresso: "/images/espresso.jpeg",
   training: "/images/train.jpeg",
+  home: "/images/home_image.jpeg",
 };
 
 export type Category = "Pyramid Rides" | "Saqqara Trails" | "Photoshoots";
@@ -91,6 +92,8 @@ export type CatalogItem = {
   image: string;
   price: number;
   oldPrice?: number;
+  priceMax?: number;
+  slots?: string[];
   en: { title: string; copy: string };
   ar: { title: string; copy: string };
 };
@@ -111,32 +114,19 @@ export const catalog: CatalogItem[] = [
     },
   },
   {
-    id: "romah",
+    id: "saqqara",
     group: "vip",
-    image: img.rearing,
+    image: img.bayPyramid,
     price: 1000,
-    oldPrice: 1500,
+    priceMax: 3000,
+    slots: ["06:00", "08:00", "15:00", "16:30"],
     en: {
-      title: 'Ride on Stallion "El-Rayes"',
-      copy: "El-Rayes is our most expensive, top-tier stallion, a rare, show-standard Arabian for riders who want the finest horse on the plateau.",
+      title: "Saqqara Ride",
+      copy: "Saqqara ride for beginners and strong horses. From 1,000 up to 3,000 EGP depending on the horse.",
     },
     ar: {
-      title: "طلعة بالحصان الريس",
-      copy: "الريس هو أغلى وأرقى خيولنا، حصان عربي أصيل بمستوى المعارض لمن يبحث عن أفضل حصان في المنطقة.",
-    },
-  },
-  {
-    id: "sbresso",
-    group: "vip",
-    image: img.espresso,
-    price: 400,
-    en: {
-      title: 'Calm Ride on "Sbresso"',
-      copy: "The gentlest horse in the stable, ideal for first-time riders, families and relaxed photo rides.",
-    },
-    ar: {
-      title: "الحصان الهادي سبريسو",
-      copy: "أهدأ خيول الإسطبل، مثالي للمبتدئين والعائلات وجلسات التصوير الهادئة.",
+      title: "رايد سقارة",
+      copy: "رايد سقارة (مبتدئ وخيل جامدة). من 1000 إلى 3000 جنيه حسب الفئة والحصان.",
     },
   },
   {
@@ -187,7 +177,8 @@ export const catalog: CatalogItem[] = [
     id: "training",
     group: "training",
     image: img.training,
-    price: 3000,
+    price: 2800,
+    oldPrice: 3000,
     en: {
       title: "Professional Equestrian Training Course",
       copy: "A full training course from seat and balance to collected canter and jumping basics, with horses matched to your level.",
@@ -203,6 +194,7 @@ export type GearItem = {
   id: string;
   price: number;
   oldPrice?: number;
+  image: string;
   en: string;
   ar: string;
 };
@@ -210,12 +202,14 @@ export type GearItem = {
 export const gear: GearItem[] = [
   {
     id: "saddle",
+    image: "/images/saddle.jpeg",
     price: 9000,
     en: "Statue-Style Horn Saddle",
     ar: "سرج بقرون شبيه للستاتيوس",
   },
   {
     id: "leather-boots",
+    image: "/images/natural_halfboot.jpeg",
     price: 1100,
     oldPrice: 1500,
     en: "Natural Leather Boots",
@@ -223,12 +217,14 @@ export const gear: GearItem[] = [
   },
   {
     id: "synthetic-boots",
+    image: "/images/unnatural_halfboot.jpeg",
     price: 850,
     en: "Imported Synthetic Boots",
     ar: "هاف بوت جلد صناعي مستورد",
   },
   {
     id: "crop",
+    image: "/images/whip.jpeg",
     price: 150,
     en: "Riding Crop",
     ar: "كرباج ركوب",

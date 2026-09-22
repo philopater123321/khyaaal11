@@ -1,4 +1,4 @@
-import { MessageCircle, ShoppingBag } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { gear, waLink } from "@/lib/site";
 import { useI18n, usePrice } from "@/lib/i18n";
 import { Reveal, SectionHeading } from "./Reveal";
@@ -19,11 +19,10 @@ export function GearShop() {
             const priceLabel = price(g.price);
             return (
               <Reveal key={g.id} delay={(i % 4) * 0.08}>
-                <article className="luxe-card flex h-full flex-col p-7">
-                  <span className="flex h-12 w-12 items-center justify-center border border-gold/50 text-gold">
-                    <ShoppingBag className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-6 text-lg leading-snug">{title}</h3>
+                <article className="luxe-card flex h-full flex-col overflow-hidden">
+                  <img src={g.image} alt={title} loading="lazy" className="h-56 w-full object-cover" />
+                  <div className="flex flex-1 flex-col p-7">
+                  <h3 className=" text-lg leading-snug">{title}</h3>
                   <div className="mt-auto pt-6">
                     <div className="flex flex-wrap items-baseline gap-3">
                       <span className="text-2xl text-gold">{priceLabel}</span>
@@ -42,6 +41,7 @@ export function GearShop() {
                       <MessageCircle className="h-3.5 w-3.5" />
                       {s.order}
                     </a>
+                  </div>
                   </div>
                 </article>
               </Reveal>
