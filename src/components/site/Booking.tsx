@@ -16,7 +16,7 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
     location: "giza" as "giza" | "saqqara",
     riders: "2",
     rideType: initialRide,
-    ...(initialRide === "saqqara" ? { location: "saqqara" as const } : {}),
+    ...(catalog.find((r) => r.id === initialRide)?.branches[0] === "saqqara" ? { location: "saqqara" as const } : {}),
     experience: "",
   });
 
@@ -32,7 +32,7 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
     e.preventDefault();
     const selectedRide = catalog.find((ride) => ride.id === form.rideType);
     if (!selectedRide) return;
-    const total = selectedRide.price * Number(form.riders || 0);
+    const total = selectedRide.perGroup ? selectedRide.price : selectedRide.price * Number(form.riders || 0);
     const message = b.message({
       name: form.name,
       phone: form.phone,
@@ -129,7 +129,10 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
                 <select
                   id="location"
                   value={form.location}
-                  onChange={set("location")}
+                  onChange={(e) => {
+                    const loc = e.target.value as "giza" | "saqqara";
+                    setForm((f) => ({ ...f, location: loc, ...(catalog.find((r) => r.id === f.rideType)?.branches.includes(loc) ? {} : { rideType: "", time: "" }) }));
+                  }}
                   className={`mt-2 ${field}`}
                 >
                   <option value="giza">{b.giza}</option>
@@ -144,7 +147,7 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
                   id="riders"
                   type="number"
                   min="1"
-                  max="30"
+                  max={current?.maxRiders ?? 30}
                   value={form.riders}
                   onChange={set("riders")}
                   className={`mt-2 ${field}`}
@@ -164,7 +167,7 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
                   className={`mt-2 ${field}`}
                 >
                   <option value="" disabled>{b.selectRide}</option>
-                  {catalog.map((ride) => (
+                  {catalog.filter((ride) => ride.branches.includes(form.location)).map((ride) => (
                     <option key={ride.id} value={ride.id}>{ride[lang].title}</option>
                   ))}
                 </select>
@@ -174,7 +177,7 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
                 <input
                   id="total"
                   readOnly
-                  value={form.rideType ? `${current?.priceMax ? (lang === "ar" ? "من " : "From ") : ""}${(catalog.find((ride) => ride.id === form.rideType)?.price ?? 0) * Number(form.riders || 0)} ${t.currency}` : ""}
+                  value={form.rideType ? `${current?.priceMax ? (lang === "ar" ? "من " : "From ") : ""}${(current?.price ?? 0) * (current?.perGroup ? 1 : Number(form.riders || 0))} ${t.currency}` : ""}
                   className={`mt-2 ${field}`}
                 />
               </div>
