@@ -84,7 +84,8 @@ export const gallery: { src: string; alt: string; category: Category }[] = [
   },
 ];
 
-export type CatalogGroup = "vip" | "offers" | "training";
+export type CatalogGroup = "vip" | "offers" | "training" | "trips";
+export type Branch = "giza" | "saqqara";
 
 export type CatalogItem = {
   id: string;
@@ -94,6 +95,9 @@ export type CatalogItem = {
   oldPrice?: number;
   priceMax?: number;
   slots?: string[];
+  branches: Branch[];
+  perGroup?: boolean;
+  maxRiders?: number;
   en: { title: string; copy: string };
   ar: { title: string; copy: string };
 };
@@ -102,6 +106,7 @@ export const catalog: CatalogItem[] = [
   {
     id: "vip-private",
     group: "vip",
+    branches: ["giza"],
     image: img.vipRide,
     price: 1000,
     en: {
@@ -116,6 +121,7 @@ export const catalog: CatalogItem[] = [
   {
     id: "saqqara",
     group: "vip",
+    branches: ["saqqara"],
     image: img.bayPyramid,
     price: 1000,
     priceMax: 3000,
@@ -132,6 +138,7 @@ export const catalog: CatalogItem[] = [
   {
     id: "daily",
     group: "offers",
+    branches: ["giza"],
     image: img.groom,
     price: 350,
     oldPrice: 500,
@@ -147,6 +154,7 @@ export const catalog: CatalogItem[] = [
   {
     id: "friday",
     group: "offers",
+    branches: ["giza"],
     image: img.duo,
     price: 350,
     oldPrice: 500,
@@ -162,8 +170,10 @@ export const catalog: CatalogItem[] = [
   {
     id: "magic",
     group: "offers",
+    branches: ["giza"],
     image: img.magicWater,
     price: 700,
+    oldPrice: 1000,
     en: {
       title: "Magic Long-Distance Desert Ride",
       copy: "Our longest route across the Samman desert, with wide open sand, big distances and endless horizons.",
@@ -176,6 +186,7 @@ export const catalog: CatalogItem[] = [
   {
     id: "training",
     group: "training",
+    branches: ["giza"],
     image: img.training,
     price: 2800,
     oldPrice: 3000,
@@ -187,6 +198,48 @@ export const catalog: CatalogItem[] = [
       title: "تدريب فروسية",
       copy: "كورس تدريب متكامل من الجلسة والتوازن حتى الجري المنضبط وأساسيات الحجز، مع خيول مناسبة لمستواك.",
     },
+  },
+  {
+    id: "saqqara-beginner",
+    group: "vip",
+    branches: ["saqqara"],
+    image: img.goldenHooves,
+    price: 500,
+    slots: ["06:00", "08:00", "15:00", "16:30"],
+    en: { title: "Saqqara Beginner Ride", copy: "A calm Saqqara ride made for beginners, on gentle horses." },
+    ar: { title: "رايد سقارة للمبتدئين", copy: "رايد هادي في سقارة مخصوص للمبتدئين على خيل هادية." },
+  },
+  {
+    id: "cart",
+    group: "trips",
+    branches: ["giza", "saqqara"],
+    image: "/images/cart.jpeg",
+    price: 1000,
+    perGroup: true,
+    maxRiders: 5,
+    en: { title: "Horse Cart Ride", copy: "A safe royal carriage ride, great for kids and elders, up the hill for a stunning pyramids view and photos. 1 to 5 people, 1,000 EGP per trip, daily." },
+    ar: { title: "ركوب الكارتة", copy: "جولة ملكية آمنة بعربة حصان، مناسبة للأطفال وكبار السن، لحد التبة لإطلالة وصور رائعة للأهرامات. من 1 إلى 5 أفراد، 1000 جنيه للرحلة، متاح يوميًا." },
+  },
+  {
+    id: "camel",
+    group: "trips",
+    branches: ["giza"],
+    image: "/images/camel.jpeg",
+    price: 1000,
+    maxRiders: 10,
+    en: { title: "Camel Ride by the Pyramids", copy: "Ride a camel through the desert facing the Giza Pyramids, with photo stops and a rest break. 1 to 10 people, each on their own camel, 1,000 EGP per person." },
+    ar: { title: "طلعة الجمال بجوار الأهرامات", copy: "ركوب جمال وسط الصحراء بإطلالة على أهرامات الجيزة، مع وقفات تصوير واستراحة. من 1 إلى 10 أفراد، كل شخص بجمل منفرد، 1000 جنيه للفرد." },
+  },
+  {
+    id: "buggy",
+    group: "trips",
+    branches: ["giza", "saqqara"],
+    image: "/images/beach_buggy.jpeg",
+    price: 1000,
+    perGroup: true,
+    maxRiders: 15,
+    en: { title: "Beach Buggy Trip", copy: "Race into the desert to a spot overlooking the pyramids, stop for photos and a drink, then ride back. 1 to 15 people, 1,000 EGP per trip, daily." },
+    ar: { title: "رحلة البيتش باجي", copy: "انطلاقة في قلب الصحراء لمكان مطل على الأهرامات، وقفة للصور ومشروب، والرجوع بنفس الإثارة. من 1 إلى 15 فرد، 1000 جنيه للرحلة، متاح يوميًا." },
   },
 ];
 
