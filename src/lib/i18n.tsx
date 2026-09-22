@@ -57,7 +57,7 @@ const en = {
   catalogSection: {
     eyebrow: "Horses & Packages",
     title: "Our horses, rides and training",
-    copy: "Transparent pricing in Egyptian Pounds. Every ride is private by default and tailored to your level and your camera.",
+    copy: "Transparent pricing in Egyptian Pounds. Every ride is private by default and tailored to your level.",
     groups: {
       vip: "Premium VIP Rides",
       offers: "Ride Offers",
@@ -238,7 +238,7 @@ const ar: Dict = {
   catalogSection: {
     eyebrow: "الخيول والباقات",
     title: "خيولنا وطلعاتنا وتدريباتنا",
-    copy: "أسعار واضحة بالجنيه المصري. كل طلعة خاصة بالكامل ومصممة حسب مستواك وكاميرتك.",
+    copy: "أسعار واضحة بالجنيه المصري. كل طلعة خاصة بالكامل ومصممة حسب مستواك.",
     groups: {
       vip: "طلعات VIP الفاخرة",
       offers: "عروض الرايد",
