@@ -62,7 +62,9 @@ const en = {
       vip: "Premium VIP Rides",
       offers: "Ride Offers",
       training: "Equestrian Training",
+      magic: "Magic Desert Ride",
       trips: "Cart, Camel & Buggy Trips",
+      saqqara: "Saqqara Horse Rides",
     },
     bookNow: "Book Now",
     was: "Was",
@@ -150,11 +152,20 @@ const en = {
     giza: "Baraa El Khayal Pyramids Stable",
     saqqara: "Saqqara Branch (Golden Hooves)",
     riders: "Number of riders",
+    units: "Number of units",
+    cartUnits: "Number of carts",
+    buggyUnits: "Number of beach buggies",
+    camelUnits: "Number of camels",
     rideType: "Ride type",
     selectRide: "Choose a ride",
     total: "Total price",
     experience: "Riding experience",
     experiencePlaceholder: "How many times has each person ridden? When was the last time? Is anyone afraid, or is everyone comfortable?",
+    arrival: "How will you arrive?",
+    selectArrival: "Choose transportation",
+    publicTransport: "Public transportation",
+    uber: "Uber",
+    privateCar: "Private car",
     submit: "Send via WhatsApp",
     message: (f: {
       name: string;
@@ -166,6 +177,9 @@ const en = {
       rideType: string;
       total: string;
       experience: string;
+      units: string;
+      arrival: string;
+      directions: string;
     }) => `Hello Khyaaal11, I would like to book a ride.
 Name: ${f.name}
 WhatsApp: ${f.phone}
@@ -173,9 +187,13 @@ Day / date: ${f.date}
 Time: ${f.time}
 Branch: ${f.location}
 Number of riders: ${f.riders}
+Number of ride units: ${f.units}
 Ride type: ${f.rideType}
 Total price: ${f.total}
-Riding experience: ${f.experience}`,
+Arrival method: ${f.arrival}
+Riding experience: ${f.experience}
+Branch directions: ${f.directions}
+Please confirm my booking and send the appropriate route for my arrival method.`,
   },
   footer: {
     copy: "Elite Arabian horse experiences at the Giza Pyramids and the Saqqara desert.",
@@ -243,7 +261,9 @@ const ar: Dict = {
       vip: "طلعات VIP الفاخرة",
       offers: "عروض الرايد",
       training: "تدريب الفروسية",
+      magic: "رايد ماجيك الصحراوي",
       trips: "رحلات الكارتة والجمال والبيتش باجي",
+      saqqara: "رايدات سقارة",
     },
     bookNow: "احجز الآن",
     was: "بدلاً من",
@@ -330,12 +350,21 @@ const ar: Dict = {
     location: "الفرع",
     giza: "إسطبل الأهرامات براء الخيال",
     saqqara: "فرع سقارة (المهماز الذهبي)",
-    riders: "عدد الفرسان",
+    riders: "عدد الأفراد",
+    units: "عدد الوحدات",
+    cartUnits: "عدد الكارتات",
+    buggyUnits: "عدد عربات البيتش باجي",
+    camelUnits: "عدد الجمال",
     rideType: "نوع الطلعة",
     selectRide: "اختر نوع الطلعة",
     total: "إجمالي السعر",
     experience: "خبرة الركوب",
     experiencePlaceholder: "كل فرد ركب كام مرة؟ وآخر مرة إمتى؟ وفي حد بيخاف ولا كله تمام؟",
+    arrival: "هتيجي إزاي؟",
+    selectArrival: "اختر وسيلة الوصول",
+    publicTransport: "مواصلات",
+    uber: "أوبر",
+    privateCar: "عربية خاصة",
     submit: "أرسل عبر الواتساب",
     message: (f) => `مرحبًا خيال 11، أرغب في حجز جولة.
 الاسم: ${f.name}
@@ -344,9 +373,13 @@ const ar: Dict = {
 الوقت: ${f.time}
 الفرع: ${f.location}
 العدد: ${f.riders}
+عدد وحدات الرحلة: ${f.units}
 نوع الطلعة: ${f.rideType}
 إجمالي السعر: ${f.total}
-خبرة الركوب: ${f.experience}`,
+وسيلة الوصول: ${f.arrival}
+خبرة الركوب: ${f.experience}
+موقع الفرع: ${f.directions}
+برجاء تأكيد الحجز وإرسال الطريق المناسب حسب وسيلة الوصول.`,
   },
   footer: {
     copy: "تجارب فروسية راقية بخيول عربية أصيلة عند أهرامات الجيزة وصحراء سقارة.",
