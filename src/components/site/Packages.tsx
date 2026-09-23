@@ -6,7 +6,7 @@ import { catalog, type CatalogGroup } from "@/lib/site";
 import { useI18n, usePrice } from "@/lib/i18n";
 import { Reveal, SectionHeading } from "./Reveal";
 
-const groups: CatalogGroup[] = ["vip", "offers", "training", "trips"];
+const groups: CatalogGroup[] = ["offers", "training", "magic", "trips", "vip", "saqqara"];
 
 export function Packages() {
   const { t, lang } = useI18n();
