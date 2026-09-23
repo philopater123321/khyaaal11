@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { MessageCircle } from "lucide-react";
-import { catalog, waLink } from "@/lib/site";
+import { catalog, locations, waLink } from "@/lib/site";
 import { useI18n } from "@/lib/i18n";
 import { Reveal } from "./Reveal";
 
 export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
   const { t, lang } = useI18n();
   const b = t.booking;
+  const formId = useId();
 
   const [form, setForm] = useState({
     name: "",
@@ -15,9 +16,11 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
     time: "",
     location: "giza" as "giza" | "saqqara",
     riders: "2",
+    units: "1",
     rideType: initialRide,
     ...(catalog.find((r) => r.id === initialRide)?.branches[0] === "saqqara" ? { location: "saqqara" as const } : {}),
     experience: "",
+    arrival: "",
   });
 
   useEffect(() => {
@@ -32,17 +35,22 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
     e.preventDefault();
     const selectedRide = catalog.find((ride) => ride.id === form.rideType);
     if (!selectedRide) return;
-    const total = selectedRide.perGroup ? selectedRide.price : selectedRide.price * Number(form.riders || 0);
+    const quantity = selectedRide.unitType ? Number(form.units || 0) : Number(form.riders || 0);
+    const total = selectedRide.price * quantity;
+    const directions = locations.find((location) => location.id === form.location)?.maps ?? "";
     const message = b.message({
       name: form.name,
       phone: form.phone,
       date: form.date,
       location: form.location === "giza" ? b.giza : b.saqqara,
       riders: form.riders,
+      units: selectedRide.unitType ? form.units : "1",
       time: form.time,
       rideType: selectedRide[lang].title,
       total: `${total.toLocaleString(lang === "ar" ? "ar-EG" : "en-US")} ${t.currency}`,
       experience: form.experience,
+      arrival: form.arrival,
+      directions,
     });
     window.open(waLink(message), "_blank", "noopener");
   };
@@ -52,6 +60,17 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
   const label = "block text-[0.66rem] uppercase tracking-[0.22em] text-muted-foreground";
 
   const current = catalog.find((r) => r.id === form.rideType);
+  const totalQuantity = current?.unitType ? Number(form.units || 0) : Number(form.riders || 0);
+  const riderMaximum = current?.capacityPerUnit
+    ? current.capacityPerUnit * Number(form.units || 1)
+    : current?.maxRiders ?? 30;
+  const unitLabel = current?.unitType === "cart"
+    ? b.cartUnits
+    : current?.unitType === "buggy"
+      ? b.buggyUnits
+      : current?.unitType === "camel"
+        ? b.camelUnits
+        : b.units;
 
   return (
 
@@ -60,11 +79,11 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
             className="luxe-card space-y-5 p-6 sm:p-10"
           >
             <div>
-              <label className={label} htmlFor="name">
+               <label className={label} htmlFor={`${formId}-name`}>
                 {b.name}
               </label>
               <input
-                id="name"
+                 id={`${formId}-name`}
                 required
                 maxLength={100}
                 value={form.name}
@@ -75,11 +94,11 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <label className={label} htmlFor="phone">
+                 <label className={label} htmlFor={`${formId}-phone`}>
                   {b.phone}
                 </label>
                 <input
-                  id="phone"
+                   id={`${formId}-phone`}
                   required
                   maxLength={30}
                   value={form.phone}
@@ -89,11 +108,11 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
                 />
               </div>
               <div>
-                <label className={label} htmlFor="date">
+                 <label className={label} htmlFor={`${formId}-date`}>
                   {b.date}
                 </label>
                 <input
-                  id="date"
+                   id={`${formId}-date`}
                   type="date"
                   required
                   value={form.date}
@@ -104,11 +123,11 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <label className={label} htmlFor="time">
+                 <label className={label} htmlFor={`${formId}-time`}>
                   {b.time}
                 </label>
                 {current?.slots ? (
-                  <select id="time" required value={form.time} onChange={set("time")} className={`mt-2 ${field}`}>
+                   <select id={`${formId}-time`} required value={form.time} onChange={set("time")} className={`mt-2 ${field}`}>
                     <option value="" disabled>{lang === "ar" ? "اختر ميعاد الرايد" : "Choose a slot"}</option>
                     {current.slots.map((sl, i) => (
                       <option key={sl} value={sl}>
@@ -117,21 +136,21 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
                     ))}
                   </select>
                 ) : (
-                  <input id="time" type="time" required value={form.time} onChange={set("time")} className={`mt-2 ${field}`} />
+                   <input id={`${formId}-time`} type="time" required value={form.time} onChange={set("time")} className={`mt-2 ${field}`} />
                 )}
               </div>
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <label className={label} htmlFor="location">
+                 <label className={label} htmlFor={`${formId}-location`}>
                   {b.location}
                 </label>
                 <select
-                  id="location"
+                   id={`${formId}-location`}
                   value={form.location}
                   onChange={(e) => {
                     const loc = e.target.value as "giza" | "saqqara";
-                    setForm((f) => ({ ...f, location: loc, ...(catalog.find((r) => r.id === f.rideType)?.branches.includes(loc) ? {} : { rideType: "", time: "" }) }));
+                     setForm((f) => ({ ...f, location: loc, units: "1", ...(catalog.find((r) => r.id === f.rideType)?.branches.includes(loc) ? {} : { rideType: "", time: "" }) }));
                   }}
                   className={`mt-2 ${field}`}
                 >
@@ -140,30 +159,49 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
                 </select>
               </div>
               <div>
-                <label className={label} htmlFor="riders">
+                 <label className={label} htmlFor={`${formId}-riders`}>
                   {b.riders}
                 </label>
                 <input
-                  id="riders"
+                   id={`${formId}-riders`}
                   type="number"
                   min="1"
-                  max={current?.maxRiders ?? 30}
+                   max={riderMaximum}
                   value={form.riders}
                   onChange={set("riders")}
                   className={`mt-2 ${field}`}
                 />
               </div>
             </div>
+             {current?.unitType ? (
+               <div>
+                 <label className={label} htmlFor={`${formId}-units`}>{unitLabel}</label>
+                 <input
+                   id={`${formId}-units`}
+                   type="number"
+                   min="1"
+                   max="20"
+                   required
+                   value={form.units}
+                   onChange={(e) => {
+                     const units = e.target.value;
+                     const max = (current.capacityPerUnit ?? 1) * Number(units || 1);
+                     setForm((f) => ({ ...f, units, riders: String(Math.min(Number(f.riders || 1), max)) }));
+                   }}
+                   className={`mt-2 ${field}`}
+                 />
+               </div>
+             ) : null}
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <label className={label} htmlFor="rideType">
+                 <label className={label} htmlFor={`${formId}-rideType`}>
                   {b.rideType}
                 </label>
                 <select
-                  id="rideType"
+                   id={`${formId}-rideType`}
                   required
                   value={form.rideType}
-                  onChange={(e) => setForm((f) => ({ ...f, rideType: e.target.value, time: "" }))}
+                   onChange={(e) => setForm((f) => ({ ...f, rideType: e.target.value, time: "", units: "1", riders: "1" }))}
                   className={`mt-2 ${field}`}
                 >
                   <option value="" disabled>{b.selectRide}</option>
@@ -173,19 +211,28 @@ export function BookingForm({ initialRide = "" }: { initialRide?: string }) {
                 </select>
               </div>
               <div>
-                <label className={label} htmlFor="total">{b.total}</label>
+                 <label className={label} htmlFor={`${formId}-total`}>{b.total}</label>
                 <input
-                  id="total"
+                   id={`${formId}-total`}
                   readOnly
-                  value={form.rideType ? `${current?.priceMax ? (lang === "ar" ? "من " : "From ") : ""}${(current?.price ?? 0) * (current?.perGroup ? 1 : Number(form.riders || 0))} ${t.currency}` : ""}
+                   value={form.rideType ? `${current?.priceMax ? (lang === "ar" ? "من " : "From ") : ""}${(current?.price ?? 0) * totalQuantity} ${t.currency}` : ""}
                   className={`mt-2 ${field}`}
                 />
               </div>
             </div>
+             <div>
+               <label className={label} htmlFor={`${formId}-arrival`}>{b.arrival}</label>
+               <select id={`${formId}-arrival`} required value={form.arrival} onChange={set("arrival")} className={`mt-2 ${field}`}>
+                 <option value="" disabled>{b.selectArrival}</option>
+                 <option value={b.publicTransport}>{b.publicTransport}</option>
+                 <option value={b.uber}>{b.uber}</option>
+                 <option value={b.privateCar}>{b.privateCar}</option>
+               </select>
+             </div>
             <div>
-              <label className={label} htmlFor="experience">{b.experience}</label>
+               <label className={label} htmlFor={`${formId}-experience`}>{b.experience}</label>
               <textarea
-                id="experience"
+                 id={`${formId}-experience`}
                 required
                 maxLength={600}
                 rows={4}
