@@ -84,7 +84,7 @@ export const gallery: { src: string; alt: string; category: Category }[] = [
   },
 ];
 
-export type CatalogGroup = "vip" | "offers" | "training" | "trips";
+export type CatalogGroup = "vip" | "offers" | "training" | "magic" | "trips" | "saqqara";
 export type Branch = "giza" | "saqqara";
 
 export type CatalogItem = {
@@ -96,8 +96,9 @@ export type CatalogItem = {
   priceMax?: number;
   slots?: string[];
   branches: Branch[];
-  perGroup?: boolean;
   maxRiders?: number;
+  capacityPerUnit?: number;
+  unitType?: "cart" | "buggy" | "camel";
   en: { title: string; copy: string };
   ar: { title: string; copy: string };
 };
@@ -120,7 +121,7 @@ export const catalog: CatalogItem[] = [
   },
   {
     id: "saqqara",
-    group: "vip",
+    group: "saqqara",
     branches: ["saqqara"],
     image: img.bayPyramid,
     price: 1000,
@@ -169,7 +170,7 @@ export const catalog: CatalogItem[] = [
   },
   {
     id: "magic",
-    group: "offers",
+    group: "magic",
     branches: ["giza"],
     image: img.magicWater,
     price: 700,
@@ -184,24 +185,54 @@ export const catalog: CatalogItem[] = [
     },
   },
   {
-    id: "training",
+    id: "training-4",
+    group: "training",
+    branches: ["giza"],
+    image: "/images/training-confidence.png",
+    price: 2000,
+    en: {
+      title: "Beginner Training, 4 Sessions",
+      copy: "Four monthly sessions on Egyptian horses, once weekly. Available daily by arrangement from 6 AM to 10 PM. Private training adds 1,000 EGP.",
+    },
+    ar: {
+      title: "تدريب المبتدئين، 4 حصص",
+      copy: "4 حصص شهريًا على خيول مصرية، مرة أسبوعيًا. متاح يوميًا بترتيب مسبق من 6 صباحًا إلى 10 مساءً. التدريب الخاص يضاف له 1000 جنيه.",
+    },
+  },
+  {
+    id: "training-8",
     group: "training",
     branches: ["giza"],
     image: img.training,
     price: 2800,
     oldPrice: 3000,
     en: {
-      title: "Professional Equestrian Training Course",
-      copy: "A full training course from seat and balance to collected canter and jumping basics, with horses matched to your level.",
+      title: "Beginner Training, 8 Sessions",
+      copy: "Eight monthly sessions on Egyptian horses, twice weekly. Available daily by arrangement from 6 AM to 10 PM. Private training adds 1,000 EGP.",
     },
     ar: {
-      title: "تدريب فروسية",
-      copy: "كورس تدريب متكامل من الجلسة والتوازن حتى الجري المنضبط وأساسيات الحجز، مع خيول مناسبة لمستواك.",
+      title: "تدريب المبتدئين، 8 حصص",
+      copy: "8 حصص شهريًا على خيول مصرية، مرتين أسبوعيًا. متاح يوميًا بترتيب مسبق من 6 صباحًا إلى 10 مساءً. التدريب الخاص يضاف له 1000 جنيه.",
+    },
+  },
+  {
+    id: "training-12",
+    group: "training",
+    branches: ["giza"],
+    image: "/images/training-private.png",
+    price: 4500,
+    en: {
+      title: "Beginner Training, 12 Sessions",
+      copy: "Twelve monthly sessions on Egyptian horses, three times weekly. Available daily by arrangement from 6 AM to 10 PM. Private training adds 1,000 EGP.",
+    },
+    ar: {
+      title: "تدريب المبتدئين، 12 حصة",
+      copy: "12 حصة شهريًا على خيول مصرية، 3 مرات أسبوعيًا. متاح يوميًا بترتيب مسبق من 6 صباحًا إلى 10 مساءً. التدريب الخاص يضاف له 1000 جنيه.",
     },
   },
   {
     id: "saqqara-beginner",
-    group: "vip",
+    group: "saqqara",
     branches: ["saqqara"],
     image: img.goldenHooves,
     price: 500,
@@ -215,10 +246,11 @@ export const catalog: CatalogItem[] = [
     branches: ["giza", "saqqara"],
     image: "/images/cart.jpeg",
     price: 1000,
-    perGroup: true,
-    maxRiders: 5,
-    en: { title: "Horse Cart Ride", copy: "A safe royal carriage ride, great for kids and elders, up the hill for a stunning pyramids view and photos. 1 to 5 people, 1,000 EGP per trip, daily." },
-    ar: { title: "ركوب الكارتة", copy: "جولة ملكية آمنة بعربة حصان، مناسبة للأطفال وكبار السن، لحد التبة لإطلالة وصور رائعة للأهرامات. من 1 إلى 5 أفراد، 1000 جنيه للرحلة، متاح يوميًا." },
+    maxRiders: 2,
+    capacityPerUnit: 2,
+    unitType: "cart",
+    en: { title: "Horse Cart Ride", copy: "A safe royal carriage ride, ideal for children and seniors, with pyramid views and photo stops. One or two guests per cart, 1,000 EGP per cart, daily." },
+    ar: { title: "ركوب الكارتة", copy: "جولة ملكية آمنة ومناسبة للأطفال وكبار السن، مع إطلالة رائعة على الأهرامات ووقفات للتصوير. من فرد إلى فردين في العربة، 1000 جنيه للكارتة، متاحة يوميًا." },
   },
   {
     id: "camel",
@@ -227,6 +259,8 @@ export const catalog: CatalogItem[] = [
     image: "/images/camel.jpeg",
     price: 1000,
     maxRiders: 10,
+    capacityPerUnit: 1,
+    unitType: "camel",
     en: { title: "Camel Ride by the Pyramids", copy: "Ride a camel through the desert facing the Giza Pyramids, with photo stops and a rest break. 1 to 10 people, each on their own camel, 1,000 EGP per person." },
     ar: { title: "طلعة الجمال بجوار الأهرامات", copy: "ركوب جمال وسط الصحراء بإطلالة على أهرامات الجيزة، مع وقفات تصوير واستراحة. من 1 إلى 10 أفراد، كل شخص بجمل منفرد، 1000 جنيه للفرد." },
   },
@@ -236,8 +270,9 @@ export const catalog: CatalogItem[] = [
     branches: ["giza", "saqqara"],
     image: "/images/beach_buggy.jpeg",
     price: 1000,
-    perGroup: true,
     maxRiders: 15,
+    capacityPerUnit: 15,
+    unitType: "buggy",
     en: { title: "Beach Buggy Trip", copy: "Race into the desert to a spot overlooking the pyramids, stop for photos and a drink, then ride back. 1 to 15 people, 1,000 EGP per trip, daily." },
     ar: { title: "رحلة البيتش باجي", copy: "انطلاقة في قلب الصحراء لمكان مطل على الأهرامات، وقفة للصور ومشروب، والرجوع بنفس الإثارة. من 1 إلى 15 فرد، 1000 جنيه للرحلة، متاح يوميًا." },
   },
