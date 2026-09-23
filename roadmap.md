@@ -5,3 +5,9 @@
 - [x] Replace VIP image with latest uploaded artwork
 - [x] Update Giza branch map link
 - [x] Verify the updated page
+- [ ] Reorder ride, training, trip, and Saqqara packages
+- [ ] Add three training packages and direct-path uploaded photos
+- [ ] Fix cart capacity and live trip quantity pricing
+- [ ] Add arrival method and branch directions to WhatsApp booking
+- [ ] Improve booking dialog close button on mobile
+- [ ] Verify booking flows in Arabic and English
